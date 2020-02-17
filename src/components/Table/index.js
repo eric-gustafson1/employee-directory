@@ -7,13 +7,14 @@ import Nav from '../Nav';
 const Table = () => {
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
+    const [sortOrder, setSortOrder] = useState('ascend');
 
     useEffect(() => {
         API.getUsers().then(results => {
             setUsers(results.data.results)
             setFilteredUsers(results.data.results)
         })
-    }, []);
+    }, [setSortOrder]);
 
     const searchFilter = (e) => {
         const filter = e.target.value;
@@ -24,9 +25,19 @@ const Table = () => {
         setFilteredUsers(filteredUserList);
     }
 
+    const sortNames = (e) => {
+        if (sortOrder) {
+            console.log('test button')
+            setSortOrder('descend')
+            setFilteredUsers(filteredUsers.reverse())
+        }
+    }
+
     return (
         <>
             <Nav searchFilter={searchFilter} />
+
+            <button type="button" className="btn btn-primary mt-2" onClick={sortNames} >Re-Sort Names</button>
 
             <table className='table table-hover mt-5'>
                 <tbody>
